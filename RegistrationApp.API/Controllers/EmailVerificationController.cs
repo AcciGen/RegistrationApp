@@ -14,16 +14,16 @@ namespace RegistrationApp.API.Controllers
             => _loginService = loginService;
 
         [HttpPost]
-        public async Task<IActionResult> SignUpAsync(LoginDTO model)
+        public async Task<IActionResult> SignUpAsync(SignUpDTO model)
         {
-            var verify = await _loginService.SignInAsync(model);
+            var verify = await _loginService.SignUpAsync(model);
 
             if (verify != null)
             {
                 return Ok(verify);
             }
 
-            return BadRequest("You've already signed up!");
+            return BadRequest("You've already signed up or your confirmation password is not same with the password!");
         }
 
         [HttpGet]

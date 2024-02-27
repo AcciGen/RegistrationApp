@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using RegistrationApp.Application.Services.LoginServices;
 using RegistrationApp.Infrastructure.Persistance;
 
 namespace RegistrationApp.Infrastructure
@@ -14,8 +13,6 @@ namespace RegistrationApp.Infrastructure
             {
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
             });
-
-            services.AddScoped<ILoginService, LoginService>();
 
             return services;
         }

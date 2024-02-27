@@ -1,41 +1,59 @@
-﻿using RegistrationApp.Application.Abstractions.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
 using RegistrationApp.Domein.Entities.DTOs;
 using RegistrationApp.Domein.Entities.Models;
+using RegistrationApp.Infrastructure.Persistance;
+using System.Data.Entity;
 
 namespace RegistrationApp.Application.Services.LoginServices
 {
     public class LoginService : ILoginService
     {
-        private readonly ILoginRepository _loginRepository;
+        private readonly ApplicationDbContext _context;
 
-        public LoginService(ILoginRepository loginRepository)
-            => _loginRepository = loginRepository;
-
-        public async Task<Login> SignUpAsync(LoginDTO loginDTO)
+        public LoginService(ApplicationDbContext context)
         {
-            var credentials = new Login()
+            _context = context;
+        }
+
+        public async Task<Login> SignUpAsync(SignUpDTO loginDTO)
+        {
+            if (loginDTO.password == loginDTO.confirmPassword)
             {
-                email = loginDTO.email,
-                password = loginDTO.password
-            };
+                var model = new Login()
+                {
+                    email = loginDTO.email,
+                    password = loginDTO.password
+                };
 
-            credentials = await _loginRepository.SignUpAsync(credentials);
+                await _context.Logins.AddAsync(model);
 
-            return credentials;
+                await _context.SaveChangesAsync();
+                
+                return model;
+            }
+
+            return null!;
+
         }
 
         public async Task<Login> SignInAsync(LoginDTO loginDTO)
         {
-            var verify = await _loginRepository.SignInAsync(loginDTO);
+            var storedLogin = await _context.Logins.FirstOrDefaultAsync(x => x.email == loginDTO.email && x.password == loginDTO.password);
 
-            return verify;
+            if (storedLogin is null)
+                return null!;
+
+            return storedLogin;
         }
 
         public async Task<Login> SignInVerificationAsync(LoginDTO loginDTO)
         {
-            var verify = await _loginRepository.SignInVerificationAsync(loginDTO);
+            var storedLogin = await _context.Logins.FirstOrDefaultAsync(x => x.email == loginDTO.email && x.verificationPassword == loginDTO.password);
 
-            return verify;
+            if (storedLogin is null)
+                return null!;
+
+            return storedLogin;
         }
 
     }

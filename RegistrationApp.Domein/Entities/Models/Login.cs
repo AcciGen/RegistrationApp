@@ -14,6 +14,6 @@ namespace RegistrationApp.Domein.Entities.Models
         public required string password { get; set; }
 
         [JsonIgnore]
-        public string verificationPassword { get; set; }
+        public string? verificationPassword { get; set; }
     }
 }
