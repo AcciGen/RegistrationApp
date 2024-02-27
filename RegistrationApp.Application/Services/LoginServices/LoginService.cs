@@ -2,7 +2,6 @@
 using RegistrationApp.Domein.Entities.DTOs;
 using RegistrationApp.Domein.Entities.Models;
 using RegistrationApp.Infrastructure.Persistance;
-using System.Data.Entity;
 using System.Net.Mail;
 using System.Net;
 using Microsoft.Extensions.Configuration;
@@ -44,8 +43,7 @@ namespace RegistrationApp.Application.Services.LoginServices
         public async Task<Login> SignInAsync(LoginDTO model)
         {
             var storedLogin = await _context.Logins
-                .Where(x => x.email == model.email && x.password == model.password)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(x => x.email == model.email && x.password == model.password);
 
             if (storedLogin is null)
                 return null!;

@@ -29,7 +29,7 @@ namespace RegistrationApp.API.Controllers
         [HttpPost]
         public async Task<IActionResult> SignInAsync([FromBody] LoginDTO model)
         {
-            var verify = await _loginService.SignInAsync(model);
+            var verify = _loginService.SignInAsync(model).Result;
 
             if (verify != null)
             {
