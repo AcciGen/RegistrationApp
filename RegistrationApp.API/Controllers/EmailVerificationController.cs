@@ -37,6 +37,19 @@ namespace RegistrationApp.API.Controllers
             }
 
             return BadRequest("You're not found!\nPlease Sign Up first!");
+        }
 
+        [HttpGet]
+        public async Task<IActionResult> SignInVerificationAsync(LoginDTO model)
+        {
+            var verify = await _loginService.SignInVerificationAsync(model);
+
+            if (verify != null)
+            {
+                return Ok("Congratulations!\nYou're logged in!");
+            }
+
+            return BadRequest("Something went wrong!");
         }
     }
+}
