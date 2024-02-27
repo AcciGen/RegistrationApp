@@ -23,6 +23,12 @@ namespace RegistrationApp.Application.Services.LoginServices
         {
             if (loginDTO.password == loginDTO.confirmPassword)
             {
+                var storedLogin = await _context.Logins
+                    .FirstOrDefaultAsync(x => x.email == loginDTO.email);
+
+                if (storedLogin is not null)
+                    return null!;
+
                 var model = new Login()
                 {
                     email = loginDTO.email,
