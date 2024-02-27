@@ -43,19 +43,23 @@ namespace RegistrationApp.Application.Services.LoginServices
 
         public async Task<Login> SignInAsync(LoginDTO model)
         {
-            var storedLogin = await _context.Logins.FirstOrDefaultAsync(x => x.email == model.email && x.password == model.password);
+            var storedLogin = await _context.Logins
+                .Where(x => x.email == model.email && x.password == model.password)
+                .FirstOrDefaultAsync();
 
             if (storedLogin is null)
                 return null!;
 
             Random random = new Random();
+            string number = $"{random.Next(1000, 9999)}";
+
 
             var emailSettings = _config.GetSection("EmailSettings");
             var mailMessage = new MailMessage
             {
                 From = new MailAddress(emailSettings["Sender"], emailSettings["SenderName"]),
                 Subject = "Unique Code",
-                Body = $"{random.Next(1000, 9999)}",
+                Body = number,
                 IsBodyHtml = true,
 
             };
