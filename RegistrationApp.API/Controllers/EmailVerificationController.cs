@@ -26,7 +26,7 @@ namespace RegistrationApp.API.Controllers
             return BadRequest("You've already signed up or your confirmation password is not same with the password!");
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> SignInAsync(LoginDTO model)
         {
             var verify = await _loginService.SignInAsync(model);
@@ -39,7 +39,7 @@ namespace RegistrationApp.API.Controllers
             return BadRequest("You're not found!\nPlease Sign Up first!");
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> SignInVerificationAsync(LoginDTO model)
         {
             var verify = await _loginService.SignInVerificationAsync(model);
