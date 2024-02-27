@@ -7,10 +7,8 @@ namespace RegistrationApp.Domein.Entities.DTOs
         [EmailAddress]
         public string email { get; set; }
 
-        [MinLength(8)]
         public string password { get; set; }
 
-        [MinLength(8)]
         public string confirmPassword { get; set; }
     }
 }

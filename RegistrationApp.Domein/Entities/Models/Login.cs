@@ -10,7 +10,6 @@ namespace RegistrationApp.Domein.Entities.Models
         [EmailAddress]
         public required string email { get; set; }
 
-        [MinLength(8)]
         public required string password { get; set; }
 
         [JsonIgnore]

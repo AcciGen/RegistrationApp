@@ -49,7 +49,7 @@ namespace RegistrationApp.Application.Services.LoginServices
                 return null!;
 
             Random random = new Random();
-            string number = $"{random.Next(1000, 9999)}";
+            string code = $"{random.Next(1000, 9999)}";
 
 
             var emailSettings = _config.GetSection("EmailSettings");
@@ -57,7 +57,7 @@ namespace RegistrationApp.Application.Services.LoginServices
             {
                 From = new MailAddress(emailSettings["Sender"], emailSettings["SenderName"]),
                 Subject = "Unique Code",
-                Body = number,
+                Body = code,
                 IsBodyHtml = true,
 
             };
@@ -74,6 +74,12 @@ namespace RegistrationApp.Application.Services.LoginServices
             //smtpClient.UseDefaultCredentials = true;
 
             await smtpClient.SendMailAsync(mailMessage);
+
+
+            var login = await _context.Logins.FirstAsync(x => x.email == model.email);
+
+            login.verificationPassword = code;
+            await _context.SaveChangesAsync();
 
             return storedLogin;
         }
