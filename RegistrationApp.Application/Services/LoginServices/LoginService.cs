@@ -97,6 +97,10 @@ namespace RegistrationApp.Application.Services.LoginServices
             if (storedLogin is null)
                 return null!;
 
+            storedLogin.verificationPassword = null;
+
+            await _context.SaveChangesAsync();
+
             return storedLogin;
         }
 
